@@ -19,6 +19,9 @@ export class HeroRouter {
     res.send(Heroes);
   }
 
+  /**
+   * GET one hero by id
+   */
   public getOne(req: Request, res: Response, next: NextFunction) {
     let query = parseInt(req.params.id);
     let hero = Heroes.find(hero => hero.id === query);
@@ -36,7 +39,7 @@ export class HeroRouter {
           message: 'No hero found with the given id.',
           status: res.status
         });
-    }  
+    }
   }
 
   /**
