@@ -12,3 +12,7 @@ Check out the [blog post](http://mherman.org/blog/2016/11/05/developing-a-restfu
 1. Compile assets - `gulp assets`
 1. Run the development server - `npm start`
 1. Test - `npm test`
+
+## Sample Projects
+
+- [Simple whois REST API](https://github.com/wingsuitist/whoissv)
