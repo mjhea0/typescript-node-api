@@ -1,28 +1,21 @@
-import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/App';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { request, expect } from '../common/dependency';
 
 describe('GET api/v1/heroes', () => {
+  let response;
+  before ('call to the API', async () => {
+    response = await request
+      .get('/api/v1/heroes');
+  });
 
-  it('responds with JSON array', () => {
-    return chai.request(app).get('/api/v1/heroes')
-      .then(res => {
-        expect(res.status).to.equal(200);
-        expect(res).to.be.json;
-        expect(res.body).to.be.an('array');
-        expect(res.body).to.have.length(5);
-      });
+  it('responseponds with JSON array', () => {
+        expect(response.status).to.equal(200);
+        expect(response).to.be.json;
+        expect(response.body).to.be.an('array');
+        expect(response.body).to.have.length(5);
   });
 
   it('should include Wolverine', () => {
-    return chai.request(app).get('/api/v1/heroes')
-      .then(res => {
-        let Wolverine = res.body.find(hero => hero.name === 'Wolverine');
+        let Wolverine = response.body.find(hero => hero.name === 'Wolverine');
         expect(Wolverine).to.exist;
         expect(Wolverine).to.have.all.keys([
           'id',
@@ -35,27 +28,23 @@ describe('GET api/v1/heroes', () => {
           'eyes',
           'powers'
         ]);
-      });
   });
 
   describe('GET api/v1/heroes/:id', () => {
+    let response;
+    before ('call to the API', async () => {
+      response = await request
+        .get('/api/v1/heroes/1');
+    });
 
-    it('responds with single JSON object', () => {
-      return chai.request(app).get('/api/v1/heroes/1')
-        .then(res => {
-          expect(res.status).to.equal(200);
-          expect(res).to.be.json;
-          expect(res.body).to.be.an('object');
-        });
+    it('responseponds with single JSON object', () => {
+          expect(response.status).to.equal(200);
+          expect(response).to.be.json;
+          expect(response.body).to.be.an('object');
     });
 
     it('should return Luke Cage', () => {
-      return chai.request(app).get('/api/v1/heroes/1')
-        .then(res => {
-          expect(res.body.hero.name).to.equal('Luke Cage');
-        });
+          expect(response.body.hero.name).to.equal('Luke Cage');
     });
-
   });
-
 });

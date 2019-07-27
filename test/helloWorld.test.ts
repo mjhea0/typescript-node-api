@@ -1,26 +1,18 @@
-import * as mocha from 'mocha';
-import * as chai from 'chai';
-import chaiHttp = require('chai-http');
-
-import app from '../src/App';
-
-chai.use(chaiHttp);
-const expect = chai.expect;
+import { request, expect } from '../common/dependency';
 
 describe('baseRoute', () => {
-
-  it('should be json', () => {
-    return chai.request(app).get('/')
-    .then(res => {
-      expect(res.type).to.eql('application/json');
-    });
+  let response;
+  before ('call to the API', async () => {
+    response = await request
+      .get('/');
   });
 
-  it('should have a message prop', () => {
-    return chai.request(app).get('/')
-    .then(res => {
-      expect(res.body.message).to.eql('Hello World!');
+  it('should be json', () => {
+      expect(response.type).to.eql('application/json');
     });
+
+  it('should have a message prop', () => {
+      expect(response.body.message).to.eql('Hello World!');
   });
 
 });
